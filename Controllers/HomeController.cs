@@ -11,6 +11,8 @@ namespace Easycode.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+
+//hola
         }
 
         public IActionResult Index()
