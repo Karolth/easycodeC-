@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TuProyecto.Models;
+using EasyCode.Models;
 using System.Globalization;
 
 public class FichaService

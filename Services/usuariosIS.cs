@@ -1,4 +1,4 @@
-using TuProyecto.Models;
+using EasyCode.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class UsuarioISService

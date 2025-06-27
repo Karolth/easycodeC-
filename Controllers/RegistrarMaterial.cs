@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using TuProyecto.Models;
-using TuProyecto.Services;
+using EasyCode.Models;
+using EasyCode.Services;
 
 [ApiController]
 [Route("[controller]")]

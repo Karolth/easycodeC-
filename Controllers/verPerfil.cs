@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TuProyecto.Services;
+using EasyCode.Services;
 using Microsoft.AspNetCore.Http;
 
 public class ModificarPerfilRequest

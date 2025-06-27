@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TuProyecto.Models;
+using EasyCode.Models;
 
 public class AdministradorService
 {
