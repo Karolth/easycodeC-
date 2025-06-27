@@ -1,0 +1,199 @@
+:root {
+    --color-primary: #4CAF50;
+    --color-primary-light: #81C784;
+    --color-primary-dark: #388E3C;
+    --color-white: #FFFFFF;
+    --color-gray-light: #F1F8E9;
+    --color-gray: #E8F5E9;
+    --color-text: #333333;
+    --color-text-light: #666666;
+    --shadow-light: 0 4px 10px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 8px 15px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(135deg, var(--color-gray-light), var(--color-white));
+    color: var(--color-text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--color-white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+}
+
+h1 {
+    text-align: center;
+    color: var(--color-primary-dark);
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* Form fields */
+.form-group {
+    margin-bottom: 20px;
+    animation: fadeIn 0.6s forwards;
+    opacity: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--color-primary-dark);
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--color-gray);
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color var(--transition-speed);
+    background-color: var(--color-white);
+    color: var(--color-text);
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--color-primary-light);
+    outline: none;
+}
+
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+/* Agrupar jornada y tipo */
+.row-selects {
+    display: flex;
+    gap: 20px;
+}
+
+.row-selects .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* File input */
+input[type="file"] {
+    padding: 10px;
+    border: 1px dashed var(--color-primary-light);
+    background-color: var(--color-gray-light);
+    border-radius: 6px;
+}
+
+.help-text {
+    font-size: 14px;
+    color: var(--color-text-light);
+    margin-top: 5px;
+}
+
+/* Botones */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+    min-width: 120px;
+}
+
+.btn-cancel {
+    background-color: var(--color-gray);
+    color: var(--color-text);
+}
+
+.btn-cancel:hover {
+    background-color: var(--color-gray-light);
+}
+
+.btn-submit {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.btn-submit:hover {
+    background-color: var(--color-primary-dark);
+}
+
+/* Mensaje de éxito */
+.success-message {
+    background-color: rgba(67, 160, 71, 0.1);
+    color: var(--color-primary-dark);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    display: none;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+}
+
+.success-message.show {
+    display: flex;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.form-group:nth-child(1) { animation-delay: 0.2s; }
+.form-group:nth-child(2) { animation-delay: 0.3s; }
+.form-group:nth-child(3) { animation-delay: 0.4s; }
+.form-group:nth-child(4) { animation-delay: 0.5s; }
+.form-group:nth-child(5) { animation-delay: 0.6s; }
+.form-group:nth-child(6) { animation-delay: 0.7s; }
+.button-group { 
+    animation: fadeIn 0.6s forwards;
+    opacity: 0;
+    animation-delay: 0.8s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .row-selects {
+        flex-direction: column;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

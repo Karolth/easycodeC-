@@ -1,0 +1,131 @@
+@{
+    ViewData["Title"] = "Registrar Elemento";
+    // If you have a shared layout for your application, specify it here.
+    // For example: Layout = "_Layout";
+    Layout = null; // Keeping it null for standalone use as per original HTML
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/public/css/RegistarElemento.css">
+    
+</head>
+<body>
+    <div class="cardElementos" id="elementos">
+        <div class="container">
+            <div class="icon-box" onclick="formulario('pc')">
+                <img src="~/public/img/1.png" alt="Icono Computador">
+                <a href="#">Computador</a>
+            </div>
+            <div class="icon-box" onclick="formulario('automovil')">
+                <img src="~/public/img/3.png" alt="Icono Automóvil">
+                <a href="#">Automóvil</a>
+            </div>
+            <div class="icon-box" onclick="formulario('otro')">
+                <img src="~/public/img/2.png" alt="Icono Otro">
+                <a href="#">Otro</a>
+            </div>            
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay" onclick="cerrarFormulario()"></div>
+
+    @* Formulario para Computador *@
+    <div class="card" id="computadorForm" style="display: none;">
+        <button class="close-btn" onclick="cerrarFormulario()">X</button>
+        <h2>Computador</h2>
+        <hr>
+        @*
+            NOTA: En ASP.NET Core MVC, lo ideal es usar Tag Helpers (asp-action, asp-controller)
+            para las acciones del formulario. Aquí mantenemos `onsubmit` para reflejar el original,
+            pero considera mover la lógica de envío al controlador de C#.
+        *@
+        <form id="formPC" onsubmit="event.preventDefault(); registrarComputador();">
+            <strong>Referencia</strong>
+            <div class="input-container">
+                <i class="fas fa-user"></i> @* Asume que Font Awesome está incluido en tu _Layout o globalmente *@
+                <input type="text" class="form-control" id="referencia" name="referencia" maxlength="45" placeholder="Ej:#########" required>
+            </div>
+            <strong>Marca</strong>
+            <div class="input-container">
+                <i class="fas fa-lock"></i>
+                <input type="text" class="form-control" id="marca" name="marca" maxlength="45" placeholder="Ej:#########" required>
+            </div>
+            <strong>Observaciones</strong>
+            <div class="input-container">
+                <i class="fas fa-lock"></i>
+                <input type="text" placeholder="Ej:#########" class="form-control" id="observaciones" name="observaciones" maxlength="100" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3" id="guardarBtn">Guardar</button>
+        </form>
+    </div>
+
+    @* Formulario para Automóvil *@
+    <div class="card" id="automovilForm" style="display: none;">
+        <button class="close-btn" onclick="cerrarFormulario()">X</button>
+        <label for="tipoVehiculo"><strong>Tipo de Vehículo</strong></label>
+        @* La carga de opciones para este select se haría desde C# o vía AJAX *@
+        <select id="tipoVehiculo" name="tipoVehiculo" class="form-control">
+            <option value="">Seleccione un tipo</option>
+            @* Ejemplo de cómo se cargarían desde un modelo si fuera una vista completa: *@
+            @* @if (Model != null && Model.TiposVehiculo != null)
+            {
+                foreach (var tipo in Model.TiposVehiculo)
+                {
+                    <option value="@tipo.Id">@tipo.Nombre</option>
+                }
+            } *@
+        </select>
+        <h2>Vehículo</h2>
+        <hr>
+        <form id="Formautomovil">
+            <strong>Placa</strong>
+            <div class="input-container">
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-control" id="Placa" name="Placa" maxlength="45" placeholder="Ej: #########" required>
+            </div>
+            <button class="btn btn-primary mt-3" type="button" onclick="registrarVehiculo()" id="btnRegistrarVehiculo">Guardar</button>
+            <div id="mensaje"></div>
+        </form>
+    </div>
+    
+
+    @* Formulario para Otro elemento *@
+    <div class="card" id="formOtro" style="display: none;">
+        <button class="close-btn" onclick="cerrarFormulario()">X</button>
+        <h2>Otro</h2>
+        <hr>
+        <form id="formRegistro" onsubmit="event.preventDefault(); registrarOtro();">
+            <strong>Nombre del elemento</strong>
+            <div class="input-container">
+                <i class="fas fa-envelope"></i>
+                <input type="text" class="form-control" id="NombreOtro" name="NombreOtro" maxlength="45" required placeholder="Ej:#########">
+            </div>
+            <strong>Observaciones</strong>
+            <div class="input-container">
+                <i class="fas fa-lock"></i>
+                <input type="text" placeholder="Ej:#########" class="form-control" id="ObservacionesOtro" name="ObservacionesOtro" maxlength="100" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+        </form>
+        <p id="mensaje"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @*
+        NOTA IMPORTANTE:
+        Asegúrate de que tus archivos JavaScript estén en la carpeta `wwwroot/public/js/`.
+        Estos scripts son los que actualmente manejan el envío de formularios.
+        Para una integración más "MVC", podrías considerar:
+        - Que cada formulario tenga su propio método POST en un controlador de C#.
+        - Que el JavaScript haga llamadas AJAX a esos métodos POST.
+    *@
+    <script src="~/public/js/RegistrarMaterial.js"></script>
+    <script src="~/public/js/RegistrarVehiculo.js"></script>
+</body>
+</html>

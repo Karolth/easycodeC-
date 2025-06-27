@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Formulario de Datos Personales";
+    // Set this to your shared layout, e.g., "_Layout.cshtml", if you have one.
+    // If this view is intended to be a partial view, you might want to keep Layout = null;
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/public/css/formulario.css">
+</head>
+
+<body>
+    <div class="form-container">
+        <img src="~/public/img/logo.jpg" alt="Logo del Proyecto" class="logo">
+        <h2>Formulario de Ingreso</h2>
+        @*
+            NOTA: Este formulario actualmente no tiene una 'action' ni 'method' definidos,
+            lo que sugiere que se está manejando completamente con JavaScript (usuarioRol.js)
+            para enviar los datos, probablemente vía AJAX.
+            Si planeas un envío tradicional a un controlador de C#, deberías añadir:
+            <form id="usuarioForm" asp-action="RegistrarUsuario" asp-controller="Usuarios" method="post">
+        *@
+        <form id="usuarioForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="Nombre">Nombre Completo:</label>
+                    <input type="text" id="Nombre" name="Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="Documento">Documento:</label>
+                    <input type="text" id="Documento" name="Documento" required 
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="Email">Correo Electrónico:</label>
+                    <input type="email" id="Email" name="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Celular">Teléfono:</label>
+                    <input type="tel" id="Celular" name="Celular" required
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="rol">Rol</label>
+                    <select class="form-control" id="rol" name="Rol" required>
+                        <option value="">Seleccionar</option>
+                        <option value="4">Instructor</option>
+                        <option value="1">Visitante</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @*
+        NOTA: Asegúrate de que tu archivo JavaScript 'usuarioRol.js'
+        esté en la carpeta `wwwroot/public/js/`.
+        Este script es el que probablemente maneja el envío del formulario
+        a tu backend.
+    *@
+    <script src="~/public/js/usuarioRol.js"></script>
+</body>
+</html>

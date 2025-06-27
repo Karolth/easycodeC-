@@ -1,0 +1,128 @@
+.text-end .btn-close {
+    background: transparent;
+    font-size: 22px;
+    color: #28a745; /* Color verde */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, color 0.3s;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.text-end .btn-close:hover {
+    color: #218838; /* Color verde más oscuro al pasar el mouse */
+    transform: scale(1.2);
+}
+
+.container-perfil {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    width: auto;
+    min-width: 320px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    z-index: 10;
+    max-height: 70vh;
+    overflow-y: auto;
+    animation: slideIn 0.5s ease-out; /* Animación de entrada */
+}
+
+.container-perfil h3 {
+    text-align: center;
+    color: #28a745; /* Color verde */
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.container-perfil h3 .btn-close {
+    position: absolute;
+    top: -5px; /* Ajusta la posición vertical */
+    right: 5px; /* Ajusta la posición horizontal para menos centrado */
+}
+
+.form-group {
+    margin-bottom: 8px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1e7dd;
+    border-radius: 6px;
+    font-size: 14px;
+    background: rgba(241, 248, 240, 0.8);
+    transition: border-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #28a745; /* Color verde al enfocar */
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.4);
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    background-color: #28a745; /* Color verde */
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    width: 48%;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #218838; /* Color verde más oscuro al pasar el mouse */
+    transform: translateY(-3px);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+    .container-perfil {
+        width: auto;
+        min-width: 80%;
+        padding: 15px;
+    }
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}

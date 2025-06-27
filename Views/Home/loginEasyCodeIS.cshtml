@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Inicio de Sesión";
+    // Set this to your shared layout, e.g., "_Layout.cshtml", if you have one.
+    // Keeping it null for a standalone login page as per your original HTML.
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/public/css/stylesIS.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="preloader">
+        <div class="preloader-images">
+            <div class="image" style="background-image: url('~/public/img/ImagenEasyCode.jpeg');"></div>
+            <div class="image" style="background-image: url('~/public/img/LetrasEasyCode.jpeg');"></div>
+        </div>
+    </div>
+    
+    <div class="login-container shadow">
+        <div class="logo-container">
+            <img src="~/public/img/ImagenEasyCode.jpeg" alt="Logo">
+        </div>
+        <h4 class="text-center mb-4">INICIO DE SESIÓN</h4>
+        @*
+            NOTA: Este formulario maneja el envío a través de JavaScript (`onclick="verificarLogin()"`).
+            Si quisieras un envío de formulario tradicional a un controlador de C#,
+            tendrías que definir `asp-action` y `asp-controller` en la etiqueta <form>
+            y posiblemente cambiar el `type="button"` del botón a `type="submit"`.
+        *@
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="Documento" class="form-label">Número de Documento</label>
+                <input type="text" class="form-control" id="Documento" placeholder="Ingrese su numero de documento" 
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="10">
+                    <span id="docError" class="error"></span>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="10">
+                <span id="passError" class="error"></span> 
+            </div>
+                <div id="message" class="message"></div>
+            <button type="button" class="btn btn-success w-100" onclick="verificarLogin()">INGRESAR</button>
+        </form>
+    </div>
+
+    @*
+        NOTA: Asegúrate de que tus archivos JavaScript estén en la carpeta `wwwroot/public/js/`.
+        Estos scripts son cruciales para la funcionalidad de login.
+    *@
+    <script src="~/public/js/scriptIS.js"></script> 
+    <script src="~/public/js/conexionIS.js"></script>         
+</body>
+</html>

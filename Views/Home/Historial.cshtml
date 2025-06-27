@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "Historial de Usuario";
+    Layout = null; // Asigna un layout si lo tienes configurado, por ejemplo, "_Layout.cshtml"
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/public/css/HistorialUsuario.css">
+    <style>
+        /* Estilos básicos para las sugerencias de autocompletado */
+        #suggestions {
+            border: 1px solid #ccc;
+            border-top: none;
+            display: none; /* Inicialmente oculto */
+            width: 93%;
+            background-color: white;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .suggestion {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Historial de Usuario</h1>
+        
+        <form id="searchForm">
+            <input type="text" id="searchTerm" placeholder="Buscar...">
+            <div id="suggestions"></div> <button type="submit">Buscar</button>
+        </form>
+    
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Material</th>
+                    <th>Referencia</th>
+                    <th>Placa</th>
+                    <th>Tipo de Vehículo</th>
+                    <th>Fecha y Hora</th>
+                    <th>Movimiento</th>
+                </tr>
+            </thead>
+            <tbody id="tablaHistorial">
+                @*
+                    Aquí es donde cargarías los datos del historial.
+                    Podrías hacerlo de varias maneras en ASP.NET Core:
+
+                    1. Pasar una lista de objetos de historial desde el controlador a esta vista (usando un @model List<TuClaseDeHistorial>).
+                       Luego, usar un bucle @foreach para renderizar cada fila <tr> y celda <td>.
+
+                    2. Si el historial es muy grande o requiere filtrado/paginación dinámicos,
+                       mantendrías el cuerpo de la tabla vacío y usarías JavaScript
+                       (como tu archivo historial.js) para hacer una llamada AJAX
+                       a un endpoint de tu API en ASP.NET Core que devuelva los datos del historial.
+                *@
+            </tbody>
+        </table>
+    </div>
+    <script src="~/public/js/historial.js"></script>
+</body>
+</html>

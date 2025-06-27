@@ -1,0 +1,200 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Formulario de búsqueda */
+#searchForm {
+    position: relative; /* Añade posición relativa al formulario */
+}
+
+#searchForm input,
+#searchForm select,
+#searchForm button {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+#searchForm button {
+    background-color: #28a745; /* Color azul */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#searchForm button:hover {
+    background-color: #0056b3; /* Color azul más oscuro al pasar el cursor */
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #28a745; /* Color azul para encabezados */
+    color: white;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilos para las filas de datos */
+td {
+    background-color: #ffffff; /* Color de fondo blanco para las celdas */
+    transition: background-color 0.3s; /* Transición suave para el fondo */
+}
+
+/* Estilos para mensajes de error o éxito */
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Estilos para el pie de página */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px 0;
+}
+
+/* Estilos para botones adicionales */
+.button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button.primary {
+    background-color: #28a745;
+    color: white;
+}
+
+.button.primary:hover {
+    background-color: #28a745;
+}
+
+.button.secondary {
+    background-color: #28a745;
+    color: white;
+}
+
+.button.secondary:hover {
+    background-color: #28a745;
+}
+
+#suggestions {
+    border: 1px solid #ccc;
+    border-top: none;
+    display: none;
+    width: 93%;
+    background-color: white;
+    position: absolute; /* Cambia a posición absoluta */
+    top: 100%; /* Posiciona la lista debajo del campo de búsqueda */
+    left: 0;
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+.highlight {
+    font-weight: bold;
+    background-color: yellow;
+}
+/* Reducir tamaño de letra en la tabla */
+table {
+    font-size: 14px;
+}
+
+/* Encabezados con mejor apariencia */
+th {
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Celdas del cuerpo con sombra y separación */
+td {
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+/* Estilo para filas alternas */
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
