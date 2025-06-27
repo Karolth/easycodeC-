@@ -12,7 +12,8 @@ namespace Easycode.Controllers
         {
             _logger = logger;
 
-//hola
+            //hola
+            //hola
         }
 
         public IActionResult Index()
