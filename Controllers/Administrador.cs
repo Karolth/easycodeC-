@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.EntityFrameworkCore; // Esto requiere el paquete NuGet Microsoft.EntityFrameworkCore.
+using Microsoft.Extensions.Hosting; // Asegúrate de incluir esta directiva si IWebHostEnvironment no se encuentra.
+using Easycode.Data; // Asegúrate de que este espacio de nombres sea correcto y contenga la definición de AppDbContext.
+using System.IO; // Para Path.Combine.
 
 namespace Easycode.Controllers
 {
