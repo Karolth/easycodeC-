@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyCode.Models
 {
-    public class UsuarioRol
+    public class UsuarioRolModel
     {
         [Key]
         public int IdUsuarioRol { get; set; }
@@ -12,9 +12,9 @@ namespace EasyCode.Models
         public int IdRol { get; set; }
 
         [ForeignKey("IdUsuario")]
-        public Usuario Usuario { get; set; }
+        public UsuarioModel Usuario { get; set; }
 
         [ForeignKey("IdRol")]
-        public Rol Rol { get; set; }
+        public RolModel Rol { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EasyCode.Models
 {
-    public class Usuario
+    public class UsuarioModel
     {
         [Key]
         public int IdUsuario { get; set; }
@@ -20,9 +20,9 @@ namespace EasyCode.Models
         [StringLength(250)]
         public string Celular { get; set; }
 
-        public ICollection<Vehiculo> Vehiculos { get; set; }
-        public ICollection<Material> Materiales { get; set; }
-        public ICollection<Movimiento> Movimientos { get; set; }
-        public ICollection<UsuarioRol> UsuarioRoles { get; set; }
+        public ICollection<VehiculoModel> Vehiculos { get; set; }
+        public ICollection<MaterialModel> Materiales { get; set; }
+        public ICollection<MovimientoModel> Movimientos { get; set; }
+        public ICollection<UsuarioRolModel> UsuarioRoles { get; set; }
     }
 }

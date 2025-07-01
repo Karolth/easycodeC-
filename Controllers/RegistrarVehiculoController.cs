@@ -14,7 +14,7 @@ public class VehiculoController : ControllerBase
     }
 
     [HttpPost("registrar")]
-    public IActionResult Registrar([FromForm] Vehiculo vehiculo)
+    public IActionResult Registrar([FromForm] VehiculoModel vehiculo)
     {
         if (string.IsNullOrEmpty(vehiculo.Placa) || vehiculo.IdTipoVehiculo == 0 ||
             (vehiculo.IdUsuario == null && vehiculo.IdAprendiz == null))

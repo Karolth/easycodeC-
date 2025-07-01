@@ -11,7 +11,7 @@ public class UsuarioRolService
 
     public int RegistrarUsuario(string documento, string nombre, string email, string celular)
     {
-        var usuario = new Usuario
+        var usuario = new UsuarioModel
         {
             Documento = documento,
             Nombre = nombre,
@@ -25,7 +25,7 @@ public class UsuarioRolService
 
     public bool AsignarRol(int idUsuario, int idRol)
     {
-        var usuarioRol = new UsuarioRol
+        var usuarioRol = new UsuarioRolModel
         {
             IdUsuario = idUsuario,
             IdRol = idRol

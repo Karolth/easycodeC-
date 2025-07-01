@@ -11,7 +11,7 @@ public class MovimientoVehiculoService
 
     public bool RegistrarMovimientoVehiculo(string estado, int idMovimiento, int idVehiculo)
     {
-        var movimientoVehiculo = new MovimientoVehiculo
+        var movimientoVehiculo = new MovimientoVehiculoModel
         {
             Estado = estado,
             IdMovimiento = idMovimiento,

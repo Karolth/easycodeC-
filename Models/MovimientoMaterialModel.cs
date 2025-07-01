@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyCode.Models
 {
-    public class MovimientoMaterial
+    public class MovimientoMaterialModel
     {
         [Key]
         public int IdMovimientoMaterial { get; set; }
@@ -15,9 +15,9 @@ namespace EasyCode.Models
         public int IdMaterial { get; set; }
 
         [ForeignKey("IdMovimiento")]
-        public Movimiento Movimiento { get; set; }
+        public MovimientoModel Movimiento { get; set; }
 
         [ForeignKey("IdMaterial")]
-        public Material Material { get; set; }
+        public MaterialModel Material { get; set; }
     }
 }

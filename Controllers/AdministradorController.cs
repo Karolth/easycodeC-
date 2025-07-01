@@ -24,7 +24,7 @@ public class AdministradorController : ControllerBase
         string rutaImagen = "";
 
         var aprendiz = _service.BuscarAprendiz(documento);
-        Usuario usuario = null;
+        UsuarioModel usuario = null;
 
         if (aprendiz != null)
         {

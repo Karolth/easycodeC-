@@ -9,11 +9,11 @@ public class PerfilService
         _context = context;
     }
 
-    public Usuario ObtenerPerfilPorId(int id)
+    public UsuarioModel ObtenerPerfilPorId(int id)
     {
         return _context.Usuarios
             .Where(u => u.IdUsuario == id)
-            .Select(u => new Usuario
+            .Select(u => new UsuarioModel
             {
                 IdUsuario = u.IdUsuario,
                 Nombre = u.Nombre,

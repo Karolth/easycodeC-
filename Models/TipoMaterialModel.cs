@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EasyCode.Models
 {
-    public class TipoPrograma
+    public class TipoMaterialModel
     {
         [Key]
-        public int IdTipoPrograma { get; set; }
+        public int IdTipoMaterial { get; set; }
 
         [StringLength(45)]
         public string Tipo { get; set; }
 
-        public ICollection<Programa> Programas { get; set; }
+        public ICollection<MaterialModel> Materiales { get; set; }
     }
 }

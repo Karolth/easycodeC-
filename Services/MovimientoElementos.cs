@@ -10,7 +10,7 @@ public class MovimientoElementoService
         _context = context;
     }
 
-    public Movimiento ObtenerUltimoMovimiento()
+    public MovimientoModel ObtenerUltimoMovimiento()
     {
         return _context.Movimientos
             .OrderByDescending(m => m.IdMovimiento)
@@ -19,7 +19,7 @@ public class MovimientoElementoService
 
     public int CrearMovimiento(string estado)
     {
-        var movimiento = new Movimiento
+        var movimiento = new MovimientoModel
         {
             MovimientoTipo = estado,
             FechaHora = DateTime.Now
@@ -36,7 +36,7 @@ public class MovimientoElementoService
 
         if (!existe)
         {
-            var nuevo = new MovimientoMaterial
+            var nuevo = new MovimientoMaterialModel
             {
                 Estado = movimiento,
                 IdMovimiento = idMovimiento,
@@ -54,7 +54,7 @@ public class MovimientoElementoService
 
         if (!existe)
         {
-            var nuevo = new MovimientoVehiculo
+            var nuevo = new MovimientoVehiculoModel
             {
                 Estado = estado,
                 IdMovimiento = idMovimiento,

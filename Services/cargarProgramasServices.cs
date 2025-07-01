@@ -11,14 +11,14 @@ public class FichaService
         _context = context;
     }
 
-    public List<Programa> ObtenerProgramas()
+    public List<ProgramaModel> ObtenerProgramas()
     {
         return _context.Programas.ToList();
     }
 
     public int InsertarFicha(string numeroFicha, DateTime fechaInicio, DateTime fechaFin, string jornada, int idPrograma)
     {
-        var ficha = new Ficha
+        var ficha = new FichaModel
         {
             Numficha = numeroFicha,
             FechaInicio = fechaInicio,

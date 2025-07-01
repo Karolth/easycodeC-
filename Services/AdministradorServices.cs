@@ -29,13 +29,13 @@ public class AdministradorService
                 }).FirstOrDefault();
     }
 
-    public Usuario BuscarUsuario(string documento)
+    public UsuarioModel BuscarUsuario(string documento)
     {
         return (from u in _context.Usuarios
                 join ur in _context.UsuarioRol on u.IdUsuario equals ur.IdUsuario
                 join r in _context.Roles on ur.IdRol equals r.IdRol
                 where u.Documento == documento
-                select new Usuario
+                select new UsuarioModel
                 {
                     IdUsuario = u.IdUsuario,
                     Nombre = u.Nombre,
@@ -44,7 +44,7 @@ public class AdministradorService
                 }).FirstOrDefault();
     }
 
-    public Movimiento ObtenerUltimoMovimiento(int? idUsuario, int? idAprendiz)
+    public MovimientoModel ObtenerUltimoMovimiento(int? idUsuario, int? idAprendiz)
     {
         return _context.Movimientos
             .Where(m => m.IdUsuario == idUsuario || m.IdAprendiz == idAprendiz)
@@ -54,7 +54,7 @@ public class AdministradorService
 
     public void InsertarMovimiento(string movimiento, int? idUsuario, int? idAprendiz)
     {
-        var nuevoMovimiento = new Movimiento
+        var nuevoMovimiento = new MovimientoModel
         {
             FechaHora = DateTime.Now,
             MovimientoTipo = movimiento,

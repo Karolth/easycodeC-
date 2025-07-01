@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyCode.Models
 {
-    public class Programa
+    public class ProgramaModel
     {
         [Key]
         public int IdPrograma { get; set; }
@@ -22,8 +22,8 @@ namespace EasyCode.Models
         public int IdTipoPrograma { get; set; }
 
         [ForeignKey("IdTipoPrograma")]
-        public TipoPrograma TipoPrograma { get; set; }
+        public TipoProgramaModel TipoPrograma { get; set; }
 
-        public ICollection<Ficha> Fichas { get; set; }
+        public ICollection<FichaModel> Fichas { get; set; }
     }
 }

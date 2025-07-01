@@ -9,13 +9,13 @@ public class VehiculoService
         _context = context;
     }
 
-    public bool RegistrarVehiculo(Vehiculo vehiculo)
+    public bool RegistrarVehiculo(VehiculoModel vehiculo)
     {
         _context.Vehiculos.Add(vehiculo);
         return _context.SaveChanges() > 0;
     }
 
-    public List<TipoVehiculo> ObtenerTiposVehiculo()
+    public List<TipoVehiculoModel> ObtenerTiposVehiculo()
     {
         return _context.TipoVehiculos.ToList();
     }

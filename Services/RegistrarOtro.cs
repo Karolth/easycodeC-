@@ -11,7 +11,7 @@ public class OtroMaterialService
 
     public bool RegistrarOtroMaterial(string nombre, string observaciones, int idTipoMaterial, int? idUsuario, int? idAprendiz)
     {
-        var material = new Material
+        var material = new MaterialModel
         {
             Nombre = nombre,
             Observaciones = observaciones,

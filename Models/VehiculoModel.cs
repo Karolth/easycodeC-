@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyCode.Models
 {
-    public class Vehiculo
+    public class VehiculoModel
     {
         [Key]
         public int IdVehiculo { get; set; }
@@ -17,14 +17,14 @@ namespace EasyCode.Models
         public int? IdAprendiz { get; set; }
 
         [ForeignKey("IdTipoVehiculo")]
-        public TipoVehiculo TipoVehiculo { get; set; }
+        public TipoVehiculoModel TipoVehiculo { get; set; }
 
         [ForeignKey("IdUsuario")]
-        public Usuario Usuario { get; set; }
+        public UsuarioModel Usuario { get; set; }
 
         [ForeignKey("IdAprendiz")]
         public Aprendiz Aprendiz { get; set; }
 
-        public ICollection<MovimientoVehiculo> MovimientoVehiculos { get; set; }
+        public ICollection<MovimientoVehiculoModel> MovimientoVehiculos { get; set; }
     }
 }

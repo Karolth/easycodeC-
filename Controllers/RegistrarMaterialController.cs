@@ -14,7 +14,7 @@ public class MaterialController : ControllerBase
     }
 
     [HttpPost("registrar")]
-    public IActionResult Registrar([FromForm] Material material)
+    public IActionResult Registrar([FromForm] MaterialModel material)
     {
         if (string.IsNullOrEmpty(material.Nombre) || string.IsNullOrEmpty(material.Referencia) ||
             string.IsNullOrEmpty(material.Marca) || material.IdTipoMaterial == 0 ||

@@ -9,7 +9,7 @@ public class MaterialService
         _context = context;
     }
 
-    public bool RegistrarMaterial(Material material)
+    public bool RegistrarMaterial(MaterialModel material)
     {
         _context.Materiales.Add(material);
         return _context.SaveChanges() > 0;

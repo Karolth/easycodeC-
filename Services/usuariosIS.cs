@@ -10,7 +10,7 @@ public class UsuarioISService
         _context = context;
     }
 
-    public Usuario ObtenerUsuarioPorDocumento(string documento)
+    public UsuarioModel ObtenerUsuarioPorDocumento(string documento)
     {
         return _context.Usuarios.FirstOrDefault(u => u.Documento == documento);
     }
@@ -24,7 +24,7 @@ public class UsuarioISService
         return rol;
     }
 
-    public Usuario ObtenerPerfilPorId(int idUsuario)
+    public UsuarioModel ObtenerPerfilPorId(int idUsuario)
     {
         return _context.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
     }
