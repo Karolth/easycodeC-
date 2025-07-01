@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // Esto requiere el paquete NuGet Microsoft.EntityFrameworkCore.
-using Microsoft.Extensions.Hosting; // Asegúrate de incluir esta directiva si IWebHostEnvironment no se encuentra.
-using Easycode.Data; // Asegúrate de que este espacio de nombres sea correcto y contenga la definición de AppDbContext.
-using System.IO; // Para Path.Combine.
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using Easycode.Data;
+using System.IO;
+using Easycode.Models.ViewModels; // Agrega esta directiva
+using Easycode.Data.Entities; // Asegúrate de que tus entidades estén en este namespace
 
 namespace Easycode.Controllers
 {
@@ -30,23 +32,24 @@ namespace Easycode.Controllers
             int? idAprendiz = null;
             string rutaImagen = "";
 
+            // Proyección a AprendizViewModel
             var aprendiz = (from a in _context.Aprendices
                             join fa in _context.FichaAprendiz on a.IdAprendiz equals fa.IdAprendiz
                             join f in _context.Fichas on fa.IdFicha equals f.IdFicha
                             join p in _context.Programas on f.IdPrograma equals p.IdPrograma
                             join tp in _context.TipoProgramas on p.IdTipoPrograma equals tp.IdTipoPrograma
                             where a.Documento == documento
-                            select new
+                            select new AprendizViewModel // Proyecta directamente al ViewModel
                             {
-                                a.IdAprendiz,
-                                a.Nombre,
-                                a.RH,
-                                a.Documento,
-                                TipoPrograma = tp.TipoPrograma,
+                                IdAprendiz = a.IdAprendiz,
+                                Nombre = a.Nombre,
+                                RH = a.RH,
+                                Documento = a.Documento,
+                                TipoPrograma = tp.Tipo, // Asume que la propiedad es 'Tipo' en TipoPrograma
                                 Programa = p.Nombre
                             }).FirstOrDefault();
 
-            object usuario = null;
+            UsuarioViewModel usuario = null; // Inicializa como tipo UsuarioViewModel
 
             if (aprendiz != null)
             {
@@ -58,22 +61,23 @@ namespace Easycode.Controllers
             }
             else
             {
+                // Proyección a UsuarioViewModel
                 usuario = (from u in _context.Usuarios
                            join ur in _context.UsuarioRoles on u.IdUsuario equals ur.IdUsuario
                            join r in _context.Roles on ur.IdRol equals r.IdRol
                            where u.Documento == documento
-                           select new
+                           select new UsuarioViewModel // Proyecta directamente al ViewModel
                            {
-                               u.IdUsuario,
-                               u.Nombre,
-                               u.Email,
+                               IdUsuario = u.IdUsuario,
+                               Nombre = u.Nombre,
+                               Email = u.Email,
                                Rol = r.Rol
                            }).FirstOrDefault();
 
                 if (usuario != null)
                 {
                     tipoPersona = "usuario";
-                    idUsuario = ((dynamic)usuario).IdUsuario;
+                    idUsuario = usuario.IdUsuario; // Acceso directo a la propiedad tipada
                     rutaImagen = Path.Combine(_env.WebRootPath, "Imagenes", "default-user.png");
                 }
                 else
@@ -87,6 +91,7 @@ namespace Easycode.Controllers
                 .OrderByDescending(m => m.FechaHora)
                 .FirstOrDefault();
 
+            // Tu código ya usa MovimientoTipo, asegúrate de que tu modelo de entidad Movimiento lo tenga.
             var nuevoMovimiento = (ultimoMovimiento != null && ultimoMovimiento.MovimientoTipo == "Entrada") ? "Salida" : "Entrada";
 
             _context.Movimientos.Add(new Movimiento
@@ -101,7 +106,7 @@ namespace Easycode.Controllers
             return Ok(new
             {
                 tipo = tipoPersona,
-                datos = aprendiz ?? usuario,
+                datos = (object)aprendiz ?? (object)usuario, // Castear a object es necesario aquí para el retorno anónimo
                 imagen = rutaImagen,
                 movimiento = nuevoMovimiento
             });
