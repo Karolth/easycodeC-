@@ -26,6 +26,6 @@ namespace EasyCode.Models
         [ForeignKey("IdPrograma")]
         public ProgramaModel Programa { get; set; }
 
-        public ICollection<FichaAprendiz> FichaAprendices { get; set; }
+        public ICollection<FichaModel> FichaAprendices { get; set; }
     }
 }

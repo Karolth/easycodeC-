@@ -17,7 +17,7 @@ namespace EasyCode.Models
         [StringLength(10)]
         public string RH { get; set; }
 
-        public ICollection<FichaAprendiz> FichaAprendices { get; set; }
+        public ICollection<FichaModel> FichaAprendices { get; set; }
         public ICollection<VehiculoModel> Vehiculos { get; set; }
         public ICollection<MaterialModel> Materiales { get; set; }
         public ICollection<MovimientoModel> Movimientos { get; set; }
