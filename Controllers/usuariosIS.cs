@@ -1,67 +1,67 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-public class LoginRequest
+namespace Easycode.Controllers
 {
-    public string Action { get; set; }
-    public string Documento { get; set; }
-    public string Password { get; set; }
-}
-
-[ApiController]
-[Route("[controller]")]
-public class UsuariosISController : ControllerBase
-{
-    private readonly UsuarioISService _service;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public UsuariosISController(UsuarioISService service, IHttpContextAccessor httpContextAccessor)
+    [ApiController]
+    [Route("[controller]")]
+    public class UsuariosISController : ControllerBase
     {
-        _service = service;
-        _httpContextAccessor = httpContextAccessor;
-    }
+        private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest input)
-    {
-        if (input == null || string.IsNullOrEmpty(input.Documento) || string.IsNullOrEmpty(input.Password))
-            return BadRequest(new { success = false, message = "Todos los campos son obligatorios" });
+        public UsuariosISController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        {
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
-        // Verificar si el Documento existe
-        var user = _service.ObtenerUsuarioPorDocumento(input.Documento);
-        if (user == null)
-            return Ok(new { success = false, message = "El documento no está registrado" });
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] dynamic input)
+        {
+            string documento = input.Documento;
+            string password = input.password;
 
-        // Verificar si la contraseña es correcta (igual al documento, según tu lógica)
-        if (user.Documento != input.Password)
-            return Ok(new { success = false, message = "La contraseña es incorrecta" });
+            if (string.IsNullOrEmpty(documento) || string.IsNullOrEmpty(password))
+                return BadRequest(new { success = false, message = "Todos los campos son obligatorios" });
 
-        // Obtener el rol del usuario
-        var role = _service.ObtenerRolPorUsuario(user.IdUsuario);
-        if (string.IsNullOrEmpty(role))
-            return Ok(new { success = false, message = "Error al obtener el rol del usuario." });
+            var user = _context.Usuarios.FirstOrDefault(u => u.Documento == documento);
+            if (user == null)
+                return Ok(new { success = false, message = "El documento no está registrado" });
 
-        if (role.ToLower() != "administrador")
-            return Ok(new { success = false, message = "Acceso denegado. Solo los administradores pueden ingresar." });
+            if (user.Documento != password)
+                return Ok(new { success = false, message = "La contraseña es incorrecta" });
 
-        // Guardar sesión (simulado, puedes usar JWT o Session)
-        _httpContextAccessor.HttpContext.Session.SetInt32("user_id", user.IdUsuario);
-        _httpContextAccessor.HttpContext.Session.SetString("Documento", user.Documento);
+            var role = (from ur in _context.UsuarioRoles
+                        join r in _context.Roles on ur.IdRol equals r.IdRol
+                        where ur.IdUsuario == user.IdUsuario
+                        select r.Rol).FirstOrDefault();
 
-        return Ok(new { success = true, message = "Inicio de sesión exitoso" });
-    }
+            if (string.IsNullOrEmpty(role))
+                return Ok(new { success = false, message = "Error al obtener el rol del usuario." });
 
-    [HttpGet("perfil")]
-    public IActionResult GetPerfil()
-    {
-        var userId = _httpContextAccessor.HttpContext.Session.GetInt32("user_id");
-        if (!userId.HasValue)
-            return Ok(new { success = false, message = "Acción no válida" });
+            if (role.ToLower() != "administrador")
+                return Ok(new { success = false, message = "Acceso denegado. Solo los administradores pueden ingresar." });
 
-        var perfil = _service.ObtenerPerfilPorId(userId.Value);
-        if (perfil == null)
-            return Ok(new { success = false, message = "Perfil no encontrado" });
+            _httpContextAccessor.HttpContext.Session.SetInt32("user_id", user.IdUsuario);
+            _httpContextAccessor.HttpContext.Session.SetString("Documento", user.Documento);
 
-        return Ok(new { success = true, data = perfil });
+            return Ok(new { success = true, message = "Inicio de sesión exitoso" });
+        }
+
+        [HttpGet("perfil")]
+        public IActionResult GetPerfil()
+        {
+            var userId = _httpContextAccessor.HttpContext.Session.GetInt32("user_id");
+            if (!userId.HasValue)
+                return Ok(new { success = false, message = "Acción no válida" });
+
+            var perfil = _context.Usuarios.FirstOrDefault(u => u.IdUsuario == userId.Value);
+            if (perfil == null)
+                return Ok(new { success = false, message = "Perfil no encontrado" });
+
+            return Ok(new { success = true, data = perfil });
+        }
     }
 }

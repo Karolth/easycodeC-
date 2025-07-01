@@ -1,44 +1,49 @@
 using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-[ApiController]
-[Route("[controller]")]
-public class EstadoController : ControllerBase
+namespace Easycode.Controllers
 {
-    private readonly EstadoService _service;
-
-    public EstadoController(EstadoService service)
+    [ApiController]
+    [Route("[controller]")]
+    public class ConsultarEstadoController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpGet("Consultar")]
-    public IActionResult Consultar([FromQuery] int? idUsuario, [FromQuery] int? idAprendiz)
-    {
-        if (!idUsuario.HasValue && !idAprendiz.HasValue)
+        public ConsultarEstadoController(AppDbContext context)
         {
-            return BadRequest(new { success = false, message = "Debe proporcionar un IdUsuario o un IdAprendiz." });
+            _context = context;
         }
 
-        string estado = null;
+        [HttpGet]
+        public IActionResult Consultar([FromQuery] int? idUsuario, [FromQuery] int? idAprendiz)
+        {
+            if (!idUsuario.HasValue && !idAprendiz.HasValue)
+                return BadRequest(new { success = false, message = "Debe proporcionar un IdUsuario o un IdAprendiz." });
 
-        if (idUsuario.HasValue)
-        {
-            estado = _service.ObtenerEstadoPorUsuario(idUsuario.Value);
-        }
+            string estado = null;
 
-        if (idAprendiz.HasValue)
-        {
-            estado = _service.ObtenerEstadoPorAprendiz(idAprendiz.Value);
-        }
+            if (idUsuario.HasValue)
+            {
+                var movimiento = _context.Movimientos
+                    .Where(m => m.IdUsuario == idUsuario.Value)
+                    .OrderByDescending(m => m.FechaHora)
+                    .FirstOrDefault();
+                estado = movimiento?.MovimientoTipo;
+            }
 
-        if (estado == null)
-        {
-            return Ok(new { success = false, message = "No se encontró estado para la persona seleccionada." });
-        }
-        else
-        {
-            return Ok(new { success = true, estado });
+            if (idAprendiz.HasValue)
+            {
+                var movimiento = _context.Movimientos
+                    .Where(m => m.IdAprendiz == idAprendiz.Value)
+                    .OrderByDescending(m => m.FechaHora)
+                    .FirstOrDefault();
+                estado = movimiento?.MovimientoTipo;
+            }
+
+            if (estado == null)
+                return Ok(new { success = false, message = "No se encontró estado para la persona seleccionada." });
+            else
+                return Ok(new { success = true, estado });
         }
     }
 }

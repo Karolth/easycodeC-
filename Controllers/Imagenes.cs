@@ -1,33 +1,53 @@
+using EasyCode.Models;
 using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-[ApiController]
-[Route("[controller]")]
-public class ImagenController : ControllerBase
+namespace Easycode.Controllers
 {
-    private readonly ImagenService _service;
-
-    public ImagenController(ImagenService service)
+    [ApiController]
+    [Route("[controller]")]
+    public class ImagenesController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpPost("subir")]
-    public IActionResult SubirImagen([FromForm] IFormFile imagen)
-    {
-        if (imagen == null || imagen.Length == 0)
-            return BadRequest("No se recibió ninguna imagen.");
-
-        using (var ms = new MemoryStream())
+        public ImagenesController(AppDbContext context)
         {
-            imagen.CopyTo(ms);
-            var contenido = ms.ToArray();
-            var nombreArchivo = Path.GetFileNameWithoutExtension(imagen.FileName);
+            _context = context;
+        }
 
-            if (_service.GuardarImagen(nombreArchivo, contenido))
-                return Ok($"Imagen '{imagen.FileName}' subida con éxito.");
-            else
-                return BadRequest($"Error al subir la imagen '{imagen.FileName}'.");
+        [HttpPost]
+        public IActionResult SubirImagenes([FromForm] List<IFormFile> imagenes)
+        {
+            if (imagenes == null || imagenes.Count == 0)
+                return BadRequest("No se recibieron imágenes.");
+
+            var tiposValidos = new[] { "image/jpeg", "image/png", "image/gif" };
+            var tamañoMaximo = 2 * 1024 * 1024; // 2MB
+
+            foreach (var imagen in imagenes)
+            {
+                if (!tiposValidos.Contains(imagen.ContentType))
+                    return BadRequest($"El archivo {imagen.FileName} no es una imagen válida.");
+
+                if (imagen.Length > tamañoMaximo)
+                    return BadRequest($"El archivo {imagen.FileName} es demasiado grande (Máximo 2MB).");
+
+                using var ms = new MemoryStream();
+                imagen.CopyTo(ms);
+                var contenido = ms.ToArray();
+
+                var nombreSinExtension = Path.GetFileNameWithoutExtension(imagen.FileName);
+
+                var imagenEntidad = new ImagenAprendiz
+                {
+                    NombreArchivo = nombreSinExtension,
+                    RutaArchivo = contenido // Ajusta según tu modelo
+                };
+                _context.ImagenesAprendiz.Add(imagenEntidad);
+            }
+
+            _context.SaveChanges();
+            return Ok("Imágenes subidas correctamente.");
         }
     }
 }

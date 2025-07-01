@@ -1,27 +1,30 @@
-using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-[ApiController]
-[Route("[controller]")]
-public class OtroMaterialController : ControllerBase
+namespace Easycode
 {
-    private readonly OtroMaterialService _service;
-
-    public OtroMaterialController(OtroMaterialService service)
+    public class Material
     {
-        _service = service;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpPost("registrar")]
-    public IActionResult Registrar([FromForm] string nombre, [FromForm] string observaciones,
-                                   [FromForm] int idTipoMaterial, [FromForm] int? idUsuario, [FromForm] int? idAprendiz)
-    {
-        if (string.IsNullOrEmpty(nombre) || idTipoMaterial == 0)
-            return BadRequest("El nombre y el tipo de material son obligatorios.");
+        public Material(AppDbContext context)
+        {
+            _context = context;
+        }
 
-        if (_service.RegistrarOtroMaterial(nombre, observaciones, idTipoMaterial, idUsuario, idAprendiz))
-            return Ok("Material registrado exitosamente.");
-        else
-            return BadRequest("Error al registrar el material.");
+        public bool RegistrarMaterial(string nombre, string referencia, string marca, string observaciones, int idTipoMaterial, int idUsuario, int idAprendiz)
+        {
+            var material = new MaterialEntidad
+            {
+                Nombre = nombre,
+                Referencia = referencia,
+                Marca = marca,
+                Observaciones = observaciones,
+                IdTipoMaterial = idTipoMaterial,
+                IdUsuario = idUsuario,
+                IdAprendiz = idAprendiz
+            };
+            _context.Materiales.Add(material);
+            return _context.SaveChanges() > 0;
+        }
     }
 }

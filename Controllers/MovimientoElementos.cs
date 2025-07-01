@@ -1,59 +1,91 @@
+using EasyCode.Models;
 using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-public class MovimientoElementosRequest
+namespace Easycode.Controllers
 {
-    public List<int> materiales { get; set; }
-    public List<int> vehiculos { get; set; }
-}
-
-[ApiController]
-[Route("[controller]")]
-public class MovimientoElementosController : ControllerBase
-{
-    private readonly MovimientoElementoService _service;
-
-    public MovimientoElementosController(MovimientoElementoService service)
+    public class MovimientoElementosRequest
     {
-        _service = service;
+        public List<int> materiales { get; set; }
+        public List<int> vehiculos { get; set; }
     }
 
-    [HttpPost("registrar")]
-    public IActionResult Registrar([FromBody] MovimientoElementosRequest data)
+    [ApiController]
+    [Route("[controller]")]
+    public class MovimientoElementosController : ControllerBase
     {
-        using var transaction = _service._context.Database.BeginTransaction();
-        try
+        private readonly AppDbContext _context;
+
+        public MovimientoElementosController(AppDbContext context)
         {
-            var ultimoMovimiento = _service.ObtenerUltimoMovimiento();
-            if (ultimoMovimiento == null)
-                return BadRequest(new { success = false, message = "No hay movimientos previos." });
-
-            var idMovimiento = ultimoMovimiento.IdMovimiento;
-            var movimiento = ultimoMovimiento.MovimientoTipo;
-
-            if (data.materiales != null)
-            {
-                foreach (var idMaterial in data.materiales)
-                {
-                    _service.InsertarMaterial(movimiento, idMovimiento, idMaterial);
-                }
-            }
-
-            if (data.vehiculos != null)
-            {
-                foreach (var idVehiculo in data.vehiculos)
-                {
-                    _service.InsertarVehiculo(movimiento, idMovimiento, idVehiculo);
-                }
-            }
-
-            transaction.Commit();
-            return Ok(new { success = true, message = "Movimientos registrados correctamente." });
+            _context = context;
         }
-        catch (Exception ex)
+
+        [HttpPost]
+        public IActionResult Registrar([FromBody] MovimientoElementosRequest data)
         {
-            transaction.Rollback();
-            return BadRequest(new { success = false, message = "Error al registrar los movimientos: " + ex.Message });
+            using var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                var ultimoMovimiento = _context.Movimientos
+                    .OrderByDescending(m => m.IdMovimiento)
+                    .FirstOrDefault();
+
+                if (ultimoMovimiento == null)
+                    return BadRequest(new { success = false, message = "No hay movimientos previos." });
+
+                var idMovimiento = ultimoMovimiento.IdMovimiento;
+                var movimiento = ultimoMovimiento.MovimientoTipo;
+
+                if (data.materiales != null)
+                {
+                    foreach (var idMaterial in data.materiales)
+                    {
+                        var existe = _context.MovimientoMateriales
+                            .Any(mm => mm.Estado == movimiento && mm.IdMaterial == idMaterial);
+
+                        if (!existe)
+                        {
+                            var nuevo = new MovimientoMaterial
+                            {
+                                Estado = movimiento,
+                                IdMovimiento = idMovimiento,
+                                IdMaterial = idMaterial
+                            };
+                            _context.MovimientoMateriales.Add(nuevo);
+                        }
+                    }
+                }
+
+                if (data.vehiculos != null)
+                {
+                    foreach (var idVehiculo in data.vehiculos)
+                    {
+                        var existe = _context.MovimientoVehiculos
+                            .Any(mv => mv.Estado == movimiento && mv.IdVehiculo == idVehiculo);
+
+                        if (!existe)
+                        {
+                            var nuevo = new MovimientoVehiculo
+                            {
+                                Estado = movimiento,
+                                IdMovimiento = idMovimiento,
+                                IdVehiculo = idVehiculo
+                            };
+                            _context.MovimientoVehiculos.Add(nuevo);
+                        }
+                    }
+                }
+
+                _context.SaveChanges();
+                transaction.Commit();
+                return Ok(new { success = true, message = "Movimientos registrados correctamente." });
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return BadRequest(new { success = false, message = "Error al registrar los movimientos: " + ex.Message });
+            }
         }
     }
 }

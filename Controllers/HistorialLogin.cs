@@ -1,31 +1,40 @@
 using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-[ApiController]
-[Route("[controller]")]
-public class UsuarioController : ControllerBase
+namespace Easycode.Controllers
 {
-    private readonly UsuarioService _service;
-
-    public UsuarioController(UsuarioService service)
+    [ApiController]
+    [Route("[controller]")]
+    public class HistorialLoginController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpGet("HistorialLogin")]
-    public IActionResult HistorialLogin()
-    {
-        try
+        public HistorialLoginController(AppDbContext context)
         {
-            var historial = _service.ObtenerHistorialLogin();
-            if (historial != null && historial.Any())
+            _context = context;
+        }
+
+        [HttpGet]
+        public IActionResult GetHistorialLogin()
+        {
+            var historial = (from m in _context.Movimientos
+                             join u in _context.Usuarios on m.IdUsuario equals u.IdUsuario
+                             join ur in _context.UsuarioRoles on u.IdUsuario equals ur.IdUsuario
+                             join r in _context.Roles on ur.IdRol equals r.IdRol
+                             where m.MovimientoTipo == "Entrada" && r.Rol == "Administrador"
+                             orderby m.FechaHora descending
+                             select new
+                             {
+                                 u.Documento,
+                                 u.Nombre,
+                                 m.FechaHora,
+                                 Rol = r.Rol
+                             }).ToList();
+
+            if (historial.Any())
                 return Ok(new { success = true, data = historial });
             else
                 return Ok(new { success = false, message = "No se encontraron registros de inicio de sesión." });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { success = false, message = "Error al obtener el historial: " + ex.Message });
         }
     }
 }
