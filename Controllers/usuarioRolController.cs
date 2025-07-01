@@ -1,54 +1,59 @@
+using EasyCode.Models;
 using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-[ApiController]
-[Route("[controller]")]
-public class UsuarioRolController : ControllerBase
+namespace Easycode.Controllers
 {
-    private readonly UsuarioRolService _service;
-
-    public UsuarioRolController(UsuarioRolService service)
+    [ApiController]
+    [Route("[controller]")]
+    public class UsuarioRolController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpPost("registrar")]
-    public IActionResult Registrar([FromForm] string documento, [FromForm] string nombre, [FromForm] string email,
-                                   [FromForm] string celular, [FromForm] int rol)
-    {
-        if (string.IsNullOrEmpty(documento) || string.IsNullOrEmpty(nombre) ||
-            string.IsNullOrEmpty(email) || string.IsNullOrEmpty(celular) || rol == 0)
+        public UsuarioRolController(AppDbContext context)
         {
-            return BadRequest(new { error = "Todos los campos son obligatorios." });
+            _context = context;
         }
 
-        using var transaction = _service._context.Database.BeginTransaction();
-        try
+        [HttpPost]
+        public IActionResult Registrar([FromForm] string documento, [FromForm] string nombre, [FromForm] string email,
+                                       [FromForm] string celular, [FromForm] int rol)
         {
-            var idUsuario = _service.RegistrarUsuario(documento, nombre, email, celular);
-            if (idUsuario > 0)
+            if (string.IsNullOrEmpty(documento) || string.IsNullOrEmpty(nombre) ||
+                string.IsNullOrEmpty(email) || string.IsNullOrEmpty(celular) || rol == 0)
             {
-                if (_service.AsignarRol(idUsuario, rol))
-                {
-                    transaction.Commit();
-                    return Ok(new { success = "Usuario registrado y rol asignado correctamente." });
-                }
-                else
-                {
-                    transaction.Rollback();
-                    return BadRequest(new { error = "Error al asignar el rol." });
-                }
+                return BadRequest(new { error = "Todos los campos son obligatorios." });
             }
-            else
+
+            using var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                var usuario = new Usuario
+                {
+                    Documento = documento,
+                    Nombre = nombre,
+                    Email = email,
+                    Celular = celular
+                };
+                _context.Usuarios.Add(usuario);
+                _context.SaveChanges();
+
+                var usuarioRol = new UsuarioRolEntidad
+                {
+                    IdUsuario = usuario.IdUsuario,
+                    IdRol = rol
+                };
+                _context.UsuarioRoles.Add(usuarioRol);
+                _context.SaveChanges();
+
+                transaction.Commit();
+                return Ok(new { success = "Usuario registrado y rol asignado correctamente." });
+            }
+            catch (Exception ex)
             {
                 transaction.Rollback();
-                return BadRequest(new { error = "Error al registrar el usuario." });
+                return BadRequest(new { error = "Excepción capturada: " + ex.Message });
             }
-        }
-        catch (Exception ex)
-        {
-            transaction.Rollback();
-            return BadRequest(new { error = "Excepción capturada: " + ex.Message });
         }
     }
 }

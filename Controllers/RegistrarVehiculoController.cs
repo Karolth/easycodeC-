@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using EasyCode.Models;
-using EasyCode.Services;
+falta que generes los sigientes archivos sin el service y todo quede en el controlador
 
+<<<<<<< HEAD:Controllers/RegistrarVehiculoController.cs
 [ApiController]
 [Route("[controller]")]
 public class VehiculoController : ControllerBase
@@ -35,3 +34,5 @@ public class VehiculoController : ControllerBase
         return Ok(new { success = true, TipoVehiculo = tipos });
     }
 }
+=======
+>>>>>>> 9870ee2aabb8417c4885ff7ebad518bfd9254f03:Controllers/RegistrarVehiculo.cs

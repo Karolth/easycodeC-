@@ -1,33 +1,36 @@
+using EasyCode.Models;
 using Microsoft.AspNetCore.Mvc;
-using EasyCode.Services;
+using System;
 
-[ApiController]
-[Route("[controller]")]
-public class MovimientoVehiculoController : ControllerBase
+namespace Easycode.Controllers
 {
-    private readonly MovimientoVehiculoService _service;
-
-    public MovimientoVehiculoController(MovimientoVehiculoService service)
+    [ApiController]
+    [Route("[controller]")]
+    public class MovimientoVehiculoController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpPost("registrar")]
-    public IActionResult Registrar([FromForm] int idVehiculo, [FromForm] string estado, [FromForm] int idMovimiento)
-    {
-        if (idVehiculo == 0 || string.IsNullOrEmpty(estado) || idMovimiento == 0)
-            return BadRequest("Todos los campos son obligatorios.");
-
-        try
+        public MovimientoVehiculoController(AppDbContext context)
         {
-            if (_service.RegistrarMovimientoVehiculo(estado, idMovimiento, idVehiculo))
-                return Ok("Movimiento registrado exitosamente.");
-            else
-                return BadRequest("Error al registrar el movimiento.");
+            _context = context;
         }
-        catch (Exception ex)
+
+        [HttpPost]
+        public IActionResult Registrar([FromForm] int idVehiculo, [FromForm] string estado, [FromForm] int idMovimiento)
         {
-            return BadRequest("Error: " + ex.Message);
+            if (idVehiculo == 0 || string.IsNullOrEmpty(estado) || idMovimiento == 0)
+                return BadRequest("Todos los campos son obligatorios.");
+
+            var movimientoVehiculo = new MovimientoVehiculo
+            {
+                Estado = estado,
+                IdMovimiento = idMovimiento,
+                IdVehiculo = idVehiculo
+            };
+            _context.MovimientoVehiculos.Add(movimientoVehiculo);
+            _context.SaveChanges();
+
+            return Ok("Movimiento registrado exitosamente.");
         }
     }
 }
