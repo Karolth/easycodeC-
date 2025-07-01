@@ -5,11 +5,11 @@ namespace Easycode.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HistorialLoginController : ControllerBase
+    public class HistorialLogin : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public HistorialLoginController(AppDbContext context)
+        public HistorialLogin(AppDbContext context)
         {
             _context = context;
         }

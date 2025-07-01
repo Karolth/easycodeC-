@@ -6,11 +6,11 @@ namespace Easycode.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ImagenesController : ControllerBase
+    public class Imagenes : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public ImagenesController(AppDbContext context)
+        public Imagenes(AppDbContext context)
         {
             _context = context;
         }

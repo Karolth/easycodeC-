@@ -5,11 +5,11 @@ namespace Easycode.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ConsultarEstadoController : ControllerBase
+    public class ConsultarEstado : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public ConsultarEstadoController(AppDbContext context)
+        public ConsultarEstado(AppDbContext context)
         {
             _context = context;
         }

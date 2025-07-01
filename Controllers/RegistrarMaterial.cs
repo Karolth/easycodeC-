@@ -5,20 +5,11 @@ namespace Easycode.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RegistrarMaterialController : ControllerBase
+    public class RegistrarMaterial : ControllerBase
     {
         private readonly AppDbContext _context;
 
-<<<<<<< HEAD:Controllers/RegistrarMaterialController.cs
-    [HttpPost("registrar")]
-    public IActionResult Registrar([FromForm] MaterialModel material)
-    {
-        if (string.IsNullOrEmpty(material.Nombre) || string.IsNullOrEmpty(material.Referencia) ||
-            string.IsNullOrEmpty(material.Marca) || material.IdTipoMaterial == 0 ||
-            (material.IdUsuario == null && material.IdAprendiz == null))
-=======
-        public RegistrarMaterialController(AppDbContext context)
->>>>>>> 9870ee2aabb8417c4885ff7ebad518bfd9254f03:Controllers/RegistrarMaterial.cs
+        public RegistrarMaterial(AppDbContext context)
         {
             _context = context;
         }

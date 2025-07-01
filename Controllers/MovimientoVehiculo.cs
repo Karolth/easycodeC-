@@ -1,4 +1,3 @@
-using EasyCode.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -6,11 +5,11 @@ namespace Easycode.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MovimientoVehiculoController : ControllerBase
+    public class MovimientoVehiculo : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public MovimientoVehiculoController(AppDbContext context)
+        public MovimientoVehiculo(AppDbContext context)
         {
             _context = context;
         }

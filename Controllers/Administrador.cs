@@ -1,42 +1,17 @@
-<<<<<<< HEAD:Controllers/AdministradorController.cs
-using Microsoft.AspNetCore.Mvc;
-using Easycode.Services;
-using EasyCode.Models; 
-{
-    
-}
-=======
-using EasyCode.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
->>>>>>> 9870ee2aabb8417c4885ff7ebad518bfd9254f03:Controllers/Administrador.cs
 
 namespace Easycode.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AdministradorController : ControllerBase
+    public class Administrador : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
 
-<<<<<<< HEAD:Controllers/AdministradorController.cs
-    [HttpGet("BuscarPorDocumento")]
-    public IActionResult BuscarPorDocumento(string documento)
-    {
-        string tipoPersona = "";
-        int? idUsuario = null;
-        int? idAprendiz = null;
-        string rutaImagen = "";
-
-        var aprendiz = _service.BuscarAprendiz(documento);
-        UsuarioModel usuario = null;
-
-        if (aprendiz != null)
-=======
-        public AdministradorController(AppDbContext context, IWebHostEnvironment env)
->>>>>>> 9870ee2aabb8417c4885ff7ebad518bfd9254f03:Controllers/Administrador.cs
+        public Administrador(AppDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
